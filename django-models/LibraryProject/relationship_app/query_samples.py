@@ -24,16 +24,15 @@ def run_queries():
     
     try:
         library = Library.objects.get(name=library_name)
-        librarian = Librarian.objects.filter(library=library)
-        if librarian.exists():
-            librarian = librarian.first()
-            print(f"Librarian for {library_name}: {librarian.name}")
-        else:
-            print(f"No librarian assigned to '{library_name}'")
-
+        librarian = Librarian.objects.get(library=library)
+        print(f"Librarian for {library_name}: {librarian.name}")
+    
     except Library.DoesNotExist:
-        print(f"No library found with name '{library_name}'")   
-
+        print(f"No library found with name '{library_name}'")
+        
+    except Librarian.DoesNotExist:
+            print(f"No librarian assigned to '{library_name}'")
+         
 
 if __name__ == "__main__":
     run_queries()
