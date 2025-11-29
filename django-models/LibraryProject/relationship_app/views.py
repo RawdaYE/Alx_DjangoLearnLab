@@ -4,11 +4,9 @@ from .models import Book
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
-
 from django.contrib.auth.views import LoginView, LogoutView
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
 
@@ -28,19 +26,19 @@ class LibraryDetailView(DetailView):
     context_object_name= 'library'
 
 
-class RegisterView(CreateView):
-    form_class = UserCreationForm
-    
-    template_name = 'relationship_app/register.html'
-    success_url = reverse_lazy('books')
-
-    def form_valid(self, form):
-        user = form.save()   
-        login(self.request, user)
-        return super().form_valid(form)
+def register(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  
+            return redirect('login') 
+    else:
+        form = UserCreationForm()
+    return render(request, 'relationship_app/register.html', {'form': form})
 
 class LoginUserView(LoginView):
-    template_name = 'relationship_app/login.html'
+    template_name='relationship_app/login.html'
 
 class LogoutUserView(LogoutView):
     next_page = 'login'
