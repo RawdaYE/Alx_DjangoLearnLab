@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth import Login
+from django.contrib.auth import login
 
 
 def list_books(request):
@@ -33,6 +33,11 @@ class RegisterView(CreateView):
     
     template_name = 'relationship_app/register.html'
     success_url = reverse_lazy('books')
+
+    def form_valid(self, form):
+        user = form.save()   
+        login(self.request, user)
+        return super().form_valid(form)
 
 class LoginUserView(LoginView):
     template_name = 'relationship_app/login.html'
