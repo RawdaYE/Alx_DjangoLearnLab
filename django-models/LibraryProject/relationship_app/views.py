@@ -4,18 +4,15 @@ from django.views.generic import ListView, DetailView
 
 def list_all_books(request):
     books = Book.objects.all()
-    return render(request, 'list_book.html', {'books': books})
-
-if __name__ == "__main__":
-    list_all_books()
+    return render(request, 'relationship_app/list_books.html', {'books': books})
 
 class BookList(ListView):
     model = Book
-    template_name = 'list_book.html'
+    template_name = 'relationship_app/list_books.html'
     context_object_name= 'books'
 
 
 class LibraryDetail(DetailView):
     model = Library
-    template_name= 'library_detail.html'
+    template_name= 'relationship_app/library_detail.html'
     context_object_name= 'library'
