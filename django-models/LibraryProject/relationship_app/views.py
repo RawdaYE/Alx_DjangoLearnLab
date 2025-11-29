@@ -8,8 +8,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
-from django.contrib.auth.views import LoginView
-from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import Login
 
 
 def list_books(request):
@@ -30,11 +30,12 @@ class LibraryDetailView(DetailView):
 
 class RegisterView(CreateView):
     form_class = UserCreationForm
-    success_url = reverse_lazy('login')
+    
     template_name = 'relationship_app/register.html'
+    success_url = reverse_lazy('books')
 
-class LoginView(LoginView):
+class LoginUserView(LoginView):
     template_name = 'relationship_app/login.html'
 
-class LogoutView(LogoutView):
+class LogoutUserView(LogoutView):
     next_page = 'login'
