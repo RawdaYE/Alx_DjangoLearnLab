@@ -4,7 +4,7 @@ def run_queries():
     author_name = "Author Name"
     try:
         author = Author.objects.get(name=author_name)
-        books_by_author  = author.books.all()
+        books_by_author  = Book.objects.filter(author=author)
         print(f"Books written by {author_name}:")
         for book in books_by_author :
             print(f" {book.title}")
@@ -24,12 +24,15 @@ def run_queries():
     
     try:
         library = Library.objects.get(name=library_name)
-        librarian = library.librarian
-        print(f"Librarian for {library_name}: {librarian.name}")
+        librarian = Librarian.objects.filter(library=library)
+        if librarian.exists():
+            librarian = librarian.first()
+            print(f"Librarian for {library_name}: {librarian.name}")
+        else:
+            print(f"No librarian assigned to '{library_name}'")
+
     except Library.DoesNotExist:
-        print(f"No library found with name '{library_name}'")
-    except Librarian.DoesNotExist:
-        print(f"No librarian assigned to '{library_name}'")
+        print(f"No library found with name '{library_name}'")   
 
 
 if __name__ == "__main__":
