@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from .models import Library
 from .models import Book
 from django.views.generic.detail import DetailView
@@ -8,6 +7,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+
 
 
 def list_books(request):
@@ -42,3 +42,4 @@ class LoginUserView(LoginView):
 
 class LogoutUserView(LogoutView):
     next_page = 'login'
+
