@@ -2,12 +2,12 @@ from .models import Library
 from .models import Book
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-
+from django.http import HttpResponse
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, permission_required
 
 
 def list_books(request):
@@ -65,4 +65,17 @@ def is_librarian(user):
 @user_passes_test(is_librarian)
 def librarian_view(request):
     return render(request, 'relationship_app/librarian_view.html')
+
+
+@permission_required('relationship_app.can_add_book', raise_exception=True)
+def add_book_view(request):
+        return HttpResponse("Add Book - Permission Granted")
+
+@permission_required('relationship_app.can_change_book', raise_exception=True)
+def change_book_view(request, book_id):
+        return HttpResponse(f"Edit Book {book_id} - Permission Granted")
+
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
+def delete_book_view(request, book_id):
+        return HttpResponse(f"Delete Book {book_id}- Permission Granted")
 
