@@ -1,7 +1,7 @@
 from django.db import models
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AbstractUser
-from .managers import CustomUserManager
+from django.contrib.auth.models import User
+
+
 
 # Create your models here.
 class Author(models.Model):
@@ -37,12 +37,12 @@ class Librarian(models.Model):
 
     def __str__(self):
         return self.name
- 
-    
-user = get_user_model()
+
+
+
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(user, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     ROLE_CHOICES = (
         ("admin", "Admin"),
@@ -53,12 +53,3 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
-    
-
-
-class CustomUser(AbstractUser):
-    date_of_birth = models.DateField(null=True, blank=True)
-    profile_photo = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
-
-    objects = CustomUserManager()
-
