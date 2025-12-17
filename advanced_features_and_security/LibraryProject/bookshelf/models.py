@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
-
+from django.contrib.auth.models import Permission
 
 # Create your models here.
 class Book(models.Model):
@@ -9,8 +9,19 @@ class Book(models.Model):
     author = models.CharField(max_length = 100)
     publication_year = models.IntegerField()
 
+
+    class Meta:
+        permissions = [
+            ("can_view", "Can view book"),
+            ("can_create", "Can create book"),
+            ("can_edit", "Can edit book"),
+            ("can_delete", "Can delete book"),
+        ]
+
+
     def __str__(self):
         return self.title
+    
     
 
 class CustomUserManager(BaseUserManager):
@@ -41,3 +52,10 @@ class CustomUser(AbstractUser):
     profile_photo = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
 
     objects = CustomUserManager()
+
+
+
+# permission = Permission.objects.get(codename= '')
+# user.user_permissions.add(permission)
+
+# group.permissions.add(permission)

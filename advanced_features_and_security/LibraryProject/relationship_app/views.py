@@ -43,8 +43,6 @@ class LoginUserView(LoginView):
 class LogoutUserView(LogoutView):
     next_page = 'login'
 
-
-
 def is_admin(user):
     return user.userprofile.role == "admin"
 
