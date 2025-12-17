@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ht*=7m=iz03mhkuwt%5(1=zu_4fp)pi(udhtz0flnskfgsft*h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bookshelf',
-    'relationship_app.apps.RelationshipAppConfig'
+    'relationship_app.apps.RelationshipAppConfig',
+    'csp',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +50,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
+
+# Content Security Policy (CSP) to limit resource loading
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", "https://cdnjs.cloudflare.com")  # allowed scripts
+CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com")  # allowed styles
+CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")      # allowed fonts
+CSP_IMG_SRC = ("'self'", "data:") 
+
+
+
+
 
 LOGIN_REDIRECT_URL = 'login'
 LOGOUT_REDIRECT_URL = '/login/'
@@ -126,3 +139,23 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
+
+
+
+# SECURITY: Prevent XSS attacks and enforce browser security
+SECURE_BROWSER_XSS_FILTER = True
+
+X_FRAME_OPTIONS = 'DENY'  # Prevent clickjacking
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Cookies only sent over HTTPS
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Enforce HTTPS and HSTS
+SECURE_HSTS_SECONDS = 31536000  # 1 year in seconds
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
+SECURE_HSTS_PRELOAD = True
+SECURE_SSL_REDIRECT = True  # Redirect HTTP to HTTPS
