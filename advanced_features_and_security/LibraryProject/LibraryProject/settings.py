@@ -159,3 +159,6 @@ SECURE_HSTS_SECONDS = 31536000  # 1 year in seconds
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
 SECURE_HSTS_PRELOAD = True
 SECURE_SSL_REDIRECT = True  # Redirect HTTP to HTTPS
+
+# Tell Django to trust the X-Forwarded-Proto header when behind a proxy (e.g., Nginx)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
