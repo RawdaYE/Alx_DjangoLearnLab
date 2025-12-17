@@ -1,8 +1,12 @@
 from django import forms
 
-class BookSearchForm(forms.Form):
-    query = forms.CharField(
+class EXampleForm(forms.Form):
+    name = forms.CharField(
         max_length=100,
-        required=False,
-        widget=forms.TextInput(attrs={'placeholder': 'Search books...'})
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Enter your name'})
+    )
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={'placeholder': 'Enter your email'})
     )
