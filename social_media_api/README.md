@@ -17,3 +17,15 @@
 - `username`, `email`, `password` (default)
 - `bio`, `profile_picture`, `followers` (custom fields)
 - Token returned on register/login for authentication
+
+
+# Deployment Instructions
+
+1. Set environment variables:
+   - DJANGO_SECRET_KEY
+   - DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
+2. Install dependencies: pip install -r requirements.txt
+3. Collect static files: python manage.py collectstatic
+4. Apply migrations: python manage.py migrate
+5. Run server: gunicorn social_media_api.wsgi
+6. Access admin: /admin
