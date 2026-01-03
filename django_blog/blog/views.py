@@ -9,6 +9,7 @@ from .models import Comment
 from .forms import CommentForm
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
+from taggit.models import Tag
 
 def register(request):
     if request.method == 'POST':
@@ -125,9 +126,11 @@ def post_search(request):
     ).distinct()
     return render(request, 'post_search.html', {'posts': posts, 'query': query})
 
-# Posts by tag
-def posts_by_tag(request, tag_name):
-    posts = Post.objects.filter(tags__name__iexact=tag_name)
-    return render(request, 'post_list.html', {'posts': posts, 'tag_name': tag_name})
 
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'post_list.html'
+    context_object_name = 'posts'
 
+    def get_queryset(self):
+        return Post.objects.filter(tags__slug=self.kwargs['tag_slug'])
