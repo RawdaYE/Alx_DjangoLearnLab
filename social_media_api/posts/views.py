@@ -1,11 +1,14 @@
-from rest_framework import viewsets, permissions, filters
+from rest_framework import viewsets, permissions, filters, status
 from rest_framework.pagination import PageNumberPagination
-from .models import Post, Comment
+from .models import Post, Comment, Like
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from .models import Post
 from rest_framework.decorators import api_view, permission_classes
 from .serializers import PostSerializer, CommentSerializer
+from django.shortcuts import get_object_or_404
+from notifications.models import Notification
+from django.contrib.contenttypes.models import ContentType
 
 User = get_user_model()
 
@@ -51,3 +54,32 @@ def feed(request):
     posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def like_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    like, created = Like.objects.get_or_create(post=post, user=request.user)
+    if not created:
+        return Response({"error": "You have already liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+
+    if post.author != request.user:
+        Notification.objects.create(
+            recipient=post.author,
+            actor=request.user,
+            verb='liked your post',
+            target=post
+        )
+
+    return Response({"success": f"Post '{post.title}' liked."})
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def unlike_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    like = Like.objects.filter(post=post, user=request.user).first()
+    if like:
+        like.delete()
+        return Response({"success": f"Post '{post.title}' unliked."})
+    return Response({"error": "You have not liked this post yet."}, status=status.HTTP_400_BAD_REQUEST)
