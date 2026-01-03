@@ -2,15 +2,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Profile</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 
-<h2>Profile</h2>
 <form method="POST">
     {% csrf_token %}
-    {{ u_form.as_p }}
+    {{ form.as_p }}
     <button type="submit">Update</button>
 </form>
 

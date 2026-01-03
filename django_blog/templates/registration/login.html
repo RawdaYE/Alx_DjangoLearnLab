@@ -2,12 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 
-<h2>Login</h2>
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
