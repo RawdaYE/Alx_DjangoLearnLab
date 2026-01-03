@@ -32,20 +32,19 @@ def profile(request):
 
 class PostListView(ListView):
     model = Post
-    template_name = 'blog/post_list.html'
+    template_name = 'post_list.html'
     context_object_name = 'posts'
-    ordering = ['-date_posted']
 
 
 class PostDetailView(DetailView):
     model = Post
-    template_name = 'blog/post_detail.html'
+    template_name = 'post_detail.html'
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
-    template_name = 'blog/post_form.html'
+    template_name = 'post_form.html'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -55,7 +54,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     form_class = PostForm
-    template_name = 'blog/post_form.html'
+    template_name = 'post_form.html'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -68,9 +67,10 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
-    template_name = 'blog/post_confirm_delete.html'
-    success_url = '/posts/'
+    template_name = 'post_confirm_delete.html'
+    success_url = '/'
 
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
+

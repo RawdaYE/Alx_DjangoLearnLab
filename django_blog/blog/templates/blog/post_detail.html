@@ -1,8 +1,18 @@
 {% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
 <h1>{{ object.title }}</h1>
 <p>{{ object.content }}</p>
-<p>By {{ object.author }} on {{ object.date_posted }}</p>
+
 {% if user == object.author %}
     <a href="{% url 'post-update' object.pk %}">Edit</a>
     <a href="{% url 'post-delete' object.pk %}">Delete</a>
 {% endif %}
+
+</body>
+</html>
