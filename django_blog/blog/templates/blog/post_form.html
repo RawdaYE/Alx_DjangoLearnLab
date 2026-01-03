@@ -1,0 +1,7 @@
+{% load static %}
+<h1>{% if object %}Edit Post{% else %}New Post{% endif %}</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>

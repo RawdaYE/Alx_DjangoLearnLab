@@ -1,0 +1,11 @@
+{% load static %}
+<h1>All Posts</h1>
+{% for post in posts %}
+    <div>
+        <h2><a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a></h2>
+        <p>{{ post.content|slice:":100" }}...</p>
+        <p>By {{ post.author }} on {{ post.date_posted }}</p>
+    </div>
+{% empty %}
+    <p>No posts yet!</p>
+{% endfor %}
