@@ -2,7 +2,7 @@ from rest_framework import generics
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
-from .serializers import UserRegisterSerializer, UserSerializer
+from .serializers import UserRegisterSerializer, LoginSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -17,7 +17,7 @@ class RegisterView(generics.CreateAPIView):
         return Response({"user": response.data, "token": token.key})
 
 class LoginView(generics.GenericAPIView):
-    serializer_class = UserRegisterSerializer  # just to accept username & password
+    sserializer_class = LoginSerializer  
 
     def post(self, request, *args, **kwargs):
         username = request.data.get('username')
