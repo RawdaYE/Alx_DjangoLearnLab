@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<h1>Search results for "{{ query }}"</h1>
+
+{% for post in posts %}
+    <h2>
+        <a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a>
+    </h2>
+    <p>{{ post.content|truncatewords:20 }}</p>
+{% empty %}
+    <p>No posts matched your search.</p>
+{% endfor %}
+
+</body>
+</html>
